@@ -1,11 +1,13 @@
-import "./globals.css";
-
 export const metadata = {
   title: "Math Engine",
   description: "Adaptive training",
 };
 
-export default function RootLayout({ children }) {
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="nl">
       <body>{children}</body>
