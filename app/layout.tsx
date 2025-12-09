@@ -1,3 +1,4 @@
+import React from "react";
 export const metadata = {
   title: "Math Engine",
   description: "Adaptive training",
