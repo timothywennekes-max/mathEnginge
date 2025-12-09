@@ -1,6 +1,6 @@
-import React from "react";
-import "./globals.css";
 
+import "./globals.css";
+import React from "react";
 export const metadata = {
   title: "Math Engine",
   description: "Adaptive training",
