@@ -79,6 +79,7 @@ export default function SessionPage() {
         Juist: {correctCount} &nbsp; Fout: {wrongCount} &nbsp; Moeilijkheid: {difficulty}
       </div>
 
+
       <div className="w-full max-w-md">
         <ExerciseCard
           exercise={exercise}
@@ -86,6 +87,19 @@ export default function SessionPage() {
           onResult={handleResult}
         />
       </div>
+<button
+      onClick={() => {
+        setMode("select");
+        setSelectedSkills([]);
+        setDifficulty(1);
+        setStreak(0);
+        setCorrectCount(0);
+        setWrongCount(0);
+      }}
+      className="mb-4 text-sm text-blue-600 underline"
+    >
+      ← Terug naar overzicht
+    </button>
     </main>
   );
 }
