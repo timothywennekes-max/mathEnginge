@@ -1,0 +1,67 @@
+"use client";
+
+import { useState } from "react";
+
+export default function ExerciseCard({ exercise, onNext, onResult }) {
+
+  const [input, setInput] = useState("");
+  const [status, setStatus] = useState<"idle"|"correct"|"wrong">("idle");
+
+  function handleSubmit(e) {
+  e.preventDefault();
+
+  const userAnswer = Number(input);
+  const correct = userAnswer === exercise.result;
+
+  onResult(correct); // <-- belangrijk
+
+  if (correct) {
+    setStatus("correct");
+    setTimeout(() => {
+      setStatus("idle");
+      setInput("");
+      onNext();
+    }, 400);
+  } else {
+    setStatus("wrong");
+    setTimeout(() => {
+      setStatus("idle");
+      setInput("");
+    }, 700);
+  }
+}
+
+
+  const borderColor =
+    status === "correct"
+      ? "border-green-500"
+      : status === "wrong"
+      ? "border-red-500"
+      : "border-slate-300";
+
+  return (
+    <div className={`border ${borderColor} rounded-xl p-6 bg-white shadow-md transition-colors`}>
+      <h2 className="text-xl font-semibold mb-4">{exercise.description}</h2>
+
+      <p className="text-lg mb-4">{exercise.expression}</p>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="number"
+          value={input}
+          autoFocus
+          onChange={(e) => setInput(e.target.value)}
+          className="w-full p-3 border border-slate-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Jouw antwoord"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors"
+        >
+          Controleer (Enter)
+        </button>
+      </form>
+    </div>
+  );
+}

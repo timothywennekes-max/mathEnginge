@@ -1,0 +1,60 @@
+{
+  "skills": [
+    {
+      "id": "int-sum-basic",
+      "module": "GH05",
+      "type": "integer-sum",
+      "description": "Optellen van gehele getallen (basis)",
+      "generator": { "min": -10, "max": 10 }
+    },
+    {
+      "id": "int-diff-basic",
+      "module": "GH05",
+      "type": "integer-difference",
+      "description": "Aftrekken van gehele getallen (basis)",
+      "generator": { "min": -10, "max": 10 }
+    },
+    {
+      "id": "int-product-basic",
+      "module": "GH06",
+      "type": "integer-product",
+      "description": "Vermenigvuldigen met gehele getallen",
+      "generator": { "min": -12, "max": 12 }
+    },
+    {
+      "id": "int-quotient-basic",
+      "module": "GH07",
+      "type": "integer-quotient",
+      "description": "Delen met gehele getallen",
+      "generator": { "min": 1, "max": 12 }
+    },
+    {
+      "id": "set-union",
+      "module": "GH08",
+      "type": "set-union",
+      "description": "Vereniging van verzamelingen",
+      "generator": { "size": 4, "max": 10 }
+    },
+    {
+      "id": "set-intersection",
+      "module": "GH08",
+      "type": "set-intersection",
+      "description": "Doorsnede van verzamelingen",
+      "generator": { "size": 4, "max": 10 }
+    },
+    {
+      "id": "divisibility-basic",
+      "module": "GH09",
+      "type": "divisibility-test",
+      "description": "Deelbaarheidstesten door 2, 3, 5, 10",
+      "generator": { "min": 1, "max": 500 }
+    },
+    {
+      "id": "rat-sum-basic",
+      "module": "GH10",
+      "type": "rational-sum",
+      "description": "Optellen van rationale getallen",
+      "generator": { "min": 1, "max": 12 }
+    }
+  ]
+}

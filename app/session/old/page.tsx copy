@@ -1,0 +1,156 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import ExerciseCard from "@/components/ExerciseCard";
+import h5 from "@/data/h5.json";
+
+type Skill = {
+  id: string;
+  type: "integer-sum" | "integer-difference";
+  description: string;
+  generator: {
+    min: number;
+    max: number;
+    sameSign?: boolean;
+  };
+};
+
+type Exercise = {
+  description: string;
+  expression: string;
+  result: number;
+};
+
+export default function SessionPage() {
+  const skills = h5.skills as Skill[];
+
+  // State
+  const [correctCount, setCorrectCount] = useState(0);
+  const [wrongCount, setWrongCount] = useState(0);
+  const [difficulty, setDifficulty] = useState(1);
+  const [streak, setStreak] = useState(0);
+
+  // Expanding skill model
+  const [unlockedSkills, setUnlockedSkills] = useState<Skill[]>([skills[0]]);
+
+  // Active exercise
+  const [exercise, setExercise] = useState<Exercise | null>(null);
+
+  // Tools
+  function randomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generatePair(skill: Skill) {
+    const rangeMultiplier = difficulty;
+    const min = skill.generator.min * rangeMultiplier;
+    const max = skill.generator.max * rangeMultiplier;
+
+    let a = randomInt(min, max);
+    let b = randomInt(min, max);
+
+    if (skill.generator.sameSign === true) {
+      const sign = Math.random() < 0.5 ? -1 : 1;
+      a = Math.abs(a) * sign;
+      b = Math.abs(b) * sign;
+    }
+
+    return { a, b };
+  }
+
+  function generateExercise(skill: Skill): Exercise {
+    const { a, b } = generatePair(skill);
+
+    if (skill.type === "integer-difference") {
+      return {
+        description: skill.description,
+        expression: `${a} - ${b}`,
+        result: a - b,
+      };
+    }
+
+    return {
+      description: skill.description,
+      expression: `${a} + ${b}`,
+      result: a + b,
+    };
+  }
+
+  // INITIAL LOAD
+  useEffect(() => {
+    setExercise(generateExercise(skills[0]));
+  }, []);
+
+  // SKILL UNLOCK
+  function unlockNextSkill() {
+    if (unlockedSkills.length < skills.length) {
+      const nextSkill = skills[unlockedSkills.length];
+      setUnlockedSkills([...unlockedSkills, nextSkill]);
+    }
+  }
+
+  // HANDLE RESULT
+  function handleResult(isCorrect: boolean) {
+    if (isCorrect) {
+      setCorrectCount((c) => c + 1);
+
+      setStreak((s) => {
+        const next = s + 1;
+
+        // Unlock new skill
+        if (next >= 5) {
+          unlockNextSkill();
+        }
+
+        // Difficulty increases every 3 streak
+        if (next % 3 === 0) {
+          setDifficulty((d) => d + 1);
+        }
+
+        return next;
+      });
+    } else {
+      setWrongCount((w) => w + 1);
+      setStreak(0);
+    }
+  }
+
+  // NEXT EXERCISE — Choose from unlocked skills
+  function nextExercise() {
+    const skillIndex = Math.floor(Math.random() * unlockedSkills.length);
+    const chosenSkill = unlockedSkills[skillIndex];
+    setExercise(generateExercise(chosenSkill));
+  }
+
+  if (!exercise) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-slate-100">
+        <p>Even geduld…</p>
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-slate-100 flex flex-col items-center pt-10 px-4">
+      <div className="mb-4 text-lg text-slate-700 font-medium">
+        <span className="mr-6">
+          Juist: <span className="text-green-600 font-semibold">{correctCount}</span>
+        </span>
+        <span className="mr-6">
+          Fout: <span className="text-red-600 font-semibold">{wrongCount}</span>
+        </span>
+        <span>
+          Moeilijkheid: <span className="text-blue-600 font-semibold">{difficulty}</span>
+        </span>
+      </div>
+
+      <div className="w-full max-w-md">
+        <ExerciseCard
+          exercise={exercise}
+          onNext={nextExercise}
+          onResult={handleResult}
+        />
+      </div>
+    </main>
+  );
+}

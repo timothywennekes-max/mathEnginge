@@ -1,0 +1,25 @@
+{
+  "skills": [
+    {
+      "id": "sum-basic",
+      "type": "integer-sum",
+      "description": "Optellen van gehele getallen",
+      "generator": {
+        "min": -10,
+        "max": 10,
+        "sameSign": false
+      }
+    },
+    {
+      "id": "difference-basic",
+      "type": "integer-difference",
+      "description": "Aftrekken van gehele getallen",
+      "generator": {
+        "min": -10,
+        "max": 10,
+        "sameSign": false
+      }
+    }
+  ]
+}
+
