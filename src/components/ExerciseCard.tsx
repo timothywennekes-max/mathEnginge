@@ -139,23 +139,23 @@ export default function ExerciseCard({ exercise, onNext, onResult }: Props) {
                 {/* CONDITIONELE UI VOOR STAP 3 EN 4 */}
                 {i === 2 ? (
                   <div className="flex items-center gap-2">
-                    <span>(+ </span>
+                    <span></span>
                     <input
                       className="p-2 border rounded w-24 font-mono"
                       value={value}
                       onChange={(e) => updateStudentStep(i, e.target.value)}
                     />
-                    <span>)</span>
+                    <span></span>
                   </div>
                 ) : i === 3 ? (
                   <div className="flex items-center gap-2">
-                    <span>( </span>
+                    <span> </span>
                     <input
                       className="p-2 border rounded w-24 font-mono"
                       value={value}
                       onChange={(e) => updateStudentStep(i, e.target.value)}
                     />
-                    <span>)</span>
+                    <span></span>
                   </div>
                 ) : (
                   <input

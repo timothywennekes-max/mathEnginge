@@ -37,7 +37,7 @@ export function buildStudentStepsSum(a: number, b: number) {
 
     // Stap 2: absolute waarden noteren
     steps.push({
-      prompt: "Noteer de absolute waarden van beide getallen.",
+      prompt: "Noteer de absolute waarden van beide getallen. Gebruik hiervoor de volgende notatie: |a|=a,|-b|=b",
       expected: `|${a}| = ${absA}, |${b}| = ${absB}`
     });
 

@@ -1,13 +1,15 @@
-import { explainIntegerSum } from "./gh05/integerSum";
-import { explainIntegerDifference } from "./gh05/integerDifference";
+import { explainIntegerSum } from "../gh05/sum.solution";
+import { explainIntegerDifference } from "../gh05/diff.solution";
 
 export function generateSteps(type: string, a: number, b: number): string[] {
   switch (type) {
     case "integer-sum":
       return explainIntegerSum(a, b);
+
     case "integer-difference":
       return explainIntegerDifference(a, b);
+
     default:
-      return ["Geen strategie beschikbaar voor dit type oefening."];
+      return ["Geen stappen beschikbaar."];
   }
 }

@@ -1,22 +1,33 @@
 "use client";
 
-export default function FractionInput({ value, onChange }) {
+type FractionInputProps = {
+  value: { numerator: string; denominator: string };
+  onChange: (value: { numerator: string; denominator: string }) => void;
+};
+
+export default function FractionInput({ value, onChange }: FractionInputProps) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-1">
       <input
-        className="border px-2 py-1 w-20 text-center"
+        type="text"
+        value={value.numerator}
+        onChange={(e) =>
+          onChange({ ...value, numerator: e.target.value })
+        }
+        className="w-16 border rounded p-1 text-center"
         placeholder="teller"
-        value={value.num}
-        onChange={(e) => onChange({ ...value, num: e.target.value })}
       />
-
-      <div className="w-20 h-px bg-black my-1"></div>
+      
+      <div className="w-full h-px bg-black" />
 
       <input
-        className="border px-2 py-1 w-20 text-center"
+        type="text"
+        value={value.denominator}
+        onChange={(e) =>
+          onChange({ ...value, denominator: e.target.value })
+        }
+        className="w-16 border rounded p-1 text-center"
         placeholder="noemer"
-        value={value.den}
-        onChange={(e) => onChange({ ...value, den: e.target.value })}
       />
     </div>
   );

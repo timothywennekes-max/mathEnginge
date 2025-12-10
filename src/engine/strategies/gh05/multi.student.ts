@@ -1,51 +1,52 @@
 import { formatInt } from "../helpers";
+import { StudentStep } from "@/engine/types";
 
 export function buildStudentStepsMulti(terms: number[]): StudentStep[] {
-  // alles als optelling met haakjes
+  // herschrijf de oefening als één optelling
   const canonical = terms
-    .map((t) => (t >= 0 ? `${t}` : `(${t})`))
-    .join(" + ");
+    .map((t, i) => (i === 0 ? formatInt(t) : `+ ${formatInt(t)}`))
+    .join(" ");
 
   const positives = terms.filter((t) => t >= 0);
   const negatives = terms.filter((t) => t < 0);
 
   const posSum = positives.reduce((a, b) => a + b, 0);
   const negSum = negatives.reduce((a, b) => a + b, 0);
-  const total = posSum + negSum;
+  const result = posSum + negSum;
 
-  return [
-    {
-      // STAP 1
-      prompt:
-        "Schrijf de oefening volledig als een optelling. Vervang elke aftrekking door het optellen van het tegengestelde getal. Gebruik haakjes voor negatieve getallen.",
-      expected: canonical,
-    },
-    {
-      // STAP 2
-      prompt:
-        "Herschik de termen zodat alle positieve termen samen staan en alle negatieve termen daarna. Dit is de commutatieve eigenschap van de optelling.",
-      expected: [
-        ...positives.map((t) => (t >= 0 ? `${t}` : `(${t})`)),
-        ...negatives.map((t) => `(${t})`),
-      ].join(" + "),
-    },
-    {
-      // STAP 3 – som van de positieve termen (alleen getal)
-      prompt:
-        "Bereken de som van alle positieve termen. (Vul enkel het getal in.)",
-      expected: `${posSum}`,
-    },
-    {
-      // STAP 4 – som van de negatieve termen (alleen getal)
-      prompt:
-        "Bereken de som van alle negatieve termen. (Vul enkel het getal in, met toestandsteken.)",
-      expected: `${negSum}`,
-    },
-    {
-      // STAP 5 – eindresultaat
-      prompt:
-        "Schrijf de eindberekening en het resultaat, bijvoorbeeld: 8 + (-3) = 5.",
-      expected: `${posSum} + (${negSum}) = ${total}`,
-    },
-  ];
+  const steps: StudentStep[] = [];
+
+  // 1. Schrijf netjes over
+  steps.push({
+    prompt: "Schrijf de oefening correct over.",
+    expected: canonical,
+  });
+
+  // 2. Herschik volgens commutativiteit
+  const commutative = [
+    ...(positives.map(formatInt)),
+    ...(negatives.map((n) => `(${n})`)),
+  ].join(" + ");
+
+  steps.push({
+    prompt:
+      "Herschik de termen zodat eerst alle positieve termen staan en daarna alle negatieve (commutatieve eigenschap).",
+    expected: commutative,
+  });
+
+  // 3. Deelresultaten invullen
+  steps.push({
+    prompt: "Vul de som van de positieve en de negatieve termen in.",
+    expected: `(+ ${positives.map(formatInt).join(" + ") || "0"}) + (- ${negatives
+      .map(formatInt)
+      .join(" + ") || "0"})`,
+  });
+
+  // 4. Eindresultaat
+  steps.push({
+    prompt: "Bereken het eindresultaat.",
+    expected: `${posSum} + (${negSum}) = ${result}`,
+  });
+
+  return steps;
 }
