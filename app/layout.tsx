@@ -1,13 +1,13 @@
-import React from "react";
+import type { ReactNode } from "react";
 import "./globals.css";
+
+type RootLayoutProps = {
+  children: ReactNode;
+};
 
 export const metadata = {
   title: "Math Engine",
   description: "Adaptive training",
-};
-
-type RootLayoutProps = {
-  children: React.ReactNode;
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
